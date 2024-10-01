@@ -1,0 +1,21 @@
+<%- include("../partials/head.ejs") %>
+<%- include("../partials/header.ejs") %>
+
+<form method="post" action="/api/v1/task-trackers/<%= task._id  %>"  enctype="application/x-www-form-urlencoded">
+    <div>
+        <p>Title</p>
+        <input type="text" name="title" value="<%= task.title %>">
+    </div>
+    <div>
+        <p>Description</p>
+        <input type="text" name="description" value="<%= task.description %>">
+    </div>
+    <br>
+    
+    <input type="hidden" name="_csrf" value="<%=  csrfToken %>">
+    <input type="submit" value="Update"/>
+  </form>
+
+
+
+<%- include("../partials/footer.ejs") %>

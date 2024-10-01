@@ -1,0 +1,39 @@
+<%- include("../partials/head.ejs") %>
+<%- include("../partials/header.ejs") %>
+
+<h2>Task Tracker List</h2>
+<a href="/api/v1/task-trackers/new/"> <button>New Task</button></a>
+
+<table id="tasks-table">
+  <tr id="tasks-table-header">
+    <th>No</th>
+    <th>Title</th>
+    <th>Description</th>
+    <th>Status</th>
+    <th colspan="2"></th>
+  </tr>
+  <% let count = 0; if (tasks && tasks.length) { %>
+    <% tasks.forEach((task) => { %>
+        <% count ++ %>
+      <tr>
+        <td><%= count %></td>
+        <td><%= task.title %></td>
+        <td><%= task.description %></td>
+        <td><%= task.status %></td>
+        <td><a href="/api/v1/task-trackers/<%= task._id %>">
+            <button type="button">edit</button>
+          </a>
+        </td>
+        <td>
+          <form method="POST" action="/api/v1/task-trackers/delete/<%= task._id %>" style="display: inline">
+            <input type="submit" value="Delete">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+          </form>
+        </td>
+      </tr>
+    <% }) %>
+  <% } %>
+</table>
+
+
+<%- include("../partials/footer.ejs") %>

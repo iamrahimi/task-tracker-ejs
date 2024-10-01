@@ -1,6 +1,7 @@
 const express = require("express");
 require("express-async-errors");
 const secretWordRouter = require('./routes/secretWord');
+const taskTrackerRoute = require('./routes/taskTracker');
 const auth = require('./middleware/auth')
 
 const app = express();
@@ -58,8 +59,22 @@ if (app.get("env") === "production") {
 
 app.use(session(sessionParms));
 
+var cookieParser = require('cookie-parser')
+var csrf = require('csurf')
+
+// setup route middlewares
+var csrfProtection = csrf({ cookie: true })
+
+// parse cookies
+// we need this because "cookie" is true in csrfProtection
+app.use(cookieParser())
+
 // let secretWord = "syzygy"; <-- comment this out or remove this line
-app.use("/secretWord", auth,  secretWordRouter);
+app.use("/secretWord", auth, csrfProtection,  secretWordRouter);
+app.use('/api/v1/task-trackers', auth, csrfProtection, taskTrackerRoute);
+
+
+
 app.use((req, res) => {
   res.status(404).send(`That page (${req.url}) was not found.`);
 });
