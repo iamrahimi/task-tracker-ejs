@@ -2,7 +2,8 @@
     "name": "task-tracker-ejs",
     "version": "1.0.0",
     "scripts": {
-        "start": "nodemon app.js"
+        "start": "nodemon app.js",
+        "test": "NODE_ENV=test mocha tests/*.js --timeout 5000 --exit"
     },
     "author": "",
     "license": "ISC",
@@ -32,7 +33,13 @@
         "yamljs": "^0.3.0"
     },
     "devDependencies": {
-        "nodemon": "^2.0.9"
+        "@faker-js/faker": "^9.0.3",
+        "chai": "^5.1.1",
+        "chai-http": "^5.0.0",
+        "factory-bot": "^6.3.1",
+        "mocha": "^10.7.3",
+        "nodemon": "^2.0.9",
+        "puppeteer": "^23.5.0"
     },
     "main": "app.js",
     "description": "task tacker ejs"

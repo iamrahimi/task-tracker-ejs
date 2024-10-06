@@ -28,10 +28,14 @@ app.use(passport.session());
 
 const MongoDBStore = require("connect-mongodb-session")(session);
 const url = process.env.MONGO_URI;
+let mongoURL = process.env.MONGO_URI;
+if (process.env.NODE_ENV == "test") {
+  mongoURL = process.env.MONGO_URI_TEST;
+}
 
 const store = new MongoDBStore({
   // may throw an error, which won't be caught
-  uri: url,
+  uri: mongoURL,
   collection: "mySessions",
 });
 store.on("error", function (error) {
@@ -84,6 +88,28 @@ app.use((err, req, res, next) => {
   console.log(err);
 });
 
+
+//testing function 
+
+app.get("/multiply", (req, res) => {
+  const result = req.query.first * req.query.second;
+  if (result.isNaN) {
+    result = "NaN";
+  } else if (result == null) {
+    result = "null";
+  }
+  res.json({ result: result });
+});
+
+app.use((req, res, next) => {
+  if (req.path == "/multiply") {
+    res.set("Content-Type", "application/json");
+  } else {
+    res.set("Content-Type", "text/html");
+  }
+  next();
+});
+
 const port = process.env.PORT || 3000;
 
 const start = async () => {
@@ -98,3 +124,5 @@ const start = async () => {
 };
 
 start();
+
+module.exports = { app };
