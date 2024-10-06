@@ -1,0 +1,40 @@
+<%- include("../partials/head.ejs") %>
+<%- include("../partials/header.ejs") %>
+
+<form method="post" action="/api/v1/task-trackers"  enctype="application/x-www-form-urlencoded">
+    <div>
+        <p>Title</p>
+        <input type="text" name="title" value="">
+    </div>
+    <div>
+        <p>Description</p>
+        <input type="text" name="description" value="">
+    </div>
+    <div class="">
+        <p> Project list</p>
+        <select name="projectId">
+            <% project.forEach(row => { %>
+             <option value="<%= row._id %>"> <%= row.name %> </option>
+            
+            <% }) %>
+        </select>
+    </div>
+
+    <div class="">
+        <p> Assign to user list</p>
+        <select name="assignedTo">
+            <% user.forEach(row => { %>
+             <option value="<%= row._id %>"> <%= row.name %> </option>
+            
+            <% }) %>
+        </select>
+    </div>
+    <br><br>
+    
+    <input type="hidden" name="_csrf" value="<%=  csrfToken %>">
+    <input type="submit" value="Save"/>
+  </form>
+
+
+
+<%- include("../partials/footer.ejs") %>
